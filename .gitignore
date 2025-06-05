@@ -1,0 +1,96 @@
+# Compiled source files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+*.db
+*.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+node_modules/
+vendor/
+venv/
+env/
+.venv/
+.gradle/
+.m2/
+build/
+target/
+out/
+bin/
+Pods/
+node_modules
+
+# Temporary files and directories
+*.tmp
+*.swp
+*.swo
+.cache/
+.idea/
+.vscode/
+*.pyc
+
+# Environment variables
+.env
+.env.*
+*.pem
+
+# Specific to your project (adjust as needed)
+# Example for Python virtual environments
+__pycache__/
+
+# Example for macOS
+.AppleDouble
+.LSOverride
+
+# Example for Windows thumbnail cache
+ehthumbs.db
+Thumbs.db
+
+.ejs
+
+# Example for JetBrains IDEs
+*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/shelf/
+
+# Example for Visual Studio Code
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/settings.json
+
+# Example for Gradle
+.gradle/
+build/
+.idea/gradle.xml
+.idea/compiler.xml
+bin/
+
+# Example for Maven
+target/
+!src/main/webapp/WEB-INF/lib/ #if you want to keep libraries in webapp/WEB-INF/lib
+
+# Example for npm
+node_modules/
+package-lock.json
+
+# Example for yarn
+node_modules/
+yarn-error.log
+
+# Example for composer
+vendor/
+composer.lock

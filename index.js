@@ -11,14 +11,14 @@ const port = 3000;
 const saltRounds = 10;
 
 app.use(
-  session({
-    secret: "TOPSECRET",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 3,
-    },
-  })
+    session({
+        secret: "TOPSECRET",
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 30,
+        },
+    })
 );
 
 app.use(passport.initialize());
@@ -37,89 +37,101 @@ db.connect();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.get("/", (req,res)=>{
-  if (req.isAuthenticated()) {
-    res.redirect("/main")
-  } else {
-    res.render("index.ejs")
-  }
+app.get("/", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.redirect("/main");
+    } else {
+        res.render("index.ejs");
+    }
 });
 
 app.get("/signin", (req, res) => {
-  res.render("signin.ejs");
+    res.render("signin.ejs");
 });
 
 app.get("/login", (req, res) => {
-  res.render("login.ejs");
+    res.render("login.ejs");
 });
 
 app.post("/signin", async (req, res) => {
-  const username = req.body.floatingInput;
-  const plainPassword = req.body.floatingPassword;
-  const result = await db.query(
-    `SELECT EXISTS (
-            SELECT username
-            FROM users
-            WHERE username = $1
-            );`,
-    [username]
-  );
-  if (result.rows[0].exists) {
-    res.render("signin.ejs", {
-      message: "Username not available",
-    });
-  } else {
-    bcrypt.hash(plainPassword, saltRounds, function (err, hash) {
-      db.query("INSERT INTO users(username,password) VALUES($1,$2)", [
-        username,
-        hash,
-      ]);
-    });
-    res.redirect("/");
-  }
+    const username = req.body.floatingInput;
+    const plainPassword = req.body.floatingPassword;
+    const result = await db.query(
+        `SELECT EXISTS (
+                SELECT username
+                FROM users
+                WHERE username = $1
+                );`,
+        [username]
+    );
+    if (result.rows[0].exists) {
+        res.render("signin.ejs", {
+            message: "Username not available",
+        });
+    } else {
+        bcrypt.hash(plainPassword, saltRounds, async function (err, hash) {
+            await db.query("INSERT INTO users(username,password) VALUES($1,$2)", [
+                username,
+                hash,
+            ]);
+        });
+        res.redirect("/");
+    }
 });
 
-app.post("/login", passport.authenticate("local",{
-  successRedirect:"/main",
-  failureRedirect:"/login"
-}))
+app.post(
+    "/login",
+    passport.authenticate("local", {
+        successRedirect: "/main",
+        failureRedirect: "/",
+        failureMessage: true, // Enable displaying failure messages
+    })
+);
 
 passport.use(
   new Strategy(async function verify(floatingInput, floatingPassword, cb) {
     try {
+      console.log(`[DEBUG] Attempting login for username: ${floatingInput}`);
+
       const result = await db.query("SELECT * FROM users WHERE username = $1", [
         floatingInput,
       ]);
+
       if (result.rows.length > 0) {
         const user = result.rows[0];
         const storedHashedPassword = user.password;
-        bcrypt.compare(floatingPassword, storedHashedPassword, (err, result) => {
-          if (err) {
-            return cb(err);
-          } else {
-            if (result) {
-              return cb(null, user);
-            } else {
-              cb(null, false);
-            }
-          }
-        });
+
+        console.log(`[DEBUG] User found in database: ${user.username}`);
+        console.log(`[DEBUG] Comparing provided password with stored hash...`);
+
+        const isMatch = await bcrypt.compare(floatingPassword, storedHashedPassword);
+
+        if (isMatch) {
+          console.log("[DEBUG] Password match successful. Logging in user.");
+          return cb(null, user);
+        } else {
+          console.warn("[WARNING] Password does not match.");
+          return cb(null, false, { message: "Incorrect password." });
+        }
       } else {
-        return cb("User not found");
+        console.warn("[WARNING] User not found in database.");
+        return cb(null, false, { message: "User not found." });
       }
     } catch (err) {
+      console.error("[ERROR] Exception during authentication:", err);
       return cb(err);
     }
   })
 );
 
+
 passport.serializeUser((user, cb) => {
-  cb(null, user);
+    cb(null, user);
 });
 passport.deserializeUser((user, cb) => {
-  cb(null, user);
+    cb(null, user);
 });
 
 app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+    console.log(`Server listening on port ${port} and running on http://localhost:${port}`);
 });
