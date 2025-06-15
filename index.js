@@ -45,17 +45,23 @@ app.get("/", (req, res) => {
     }
 });
 
-app.get("/signin", (req, res) => {
-    res.render("signin.ejs");
-});
+app.get("/main",(req,res)=>{
+    if (req.isAuthenticated()){
+        res.render("main.ejs", {
+            username: req.user.username,
+        });
+    } else {
+        res.redirect("/");
+    }
+})
 
-app.get("/login", (req, res) => {
-    res.render("login.ejs");
-});
+app.get("/get_started",(req, res)=>{
+    res.render("get_started.ejs");
+})
 
 app.post("/signin", async (req, res) => {
-    const username = req.body.floatingInput;
-    const plainPassword = req.body.floatingPassword;
+    const username = req.body.firstName + req.body.lastName;
+    const plainPassword = req.body.password;
     const result = await db.query(
         `SELECT EXISTS (
                 SELECT username
@@ -89,12 +95,12 @@ app.post(
 );
 
 passport.use(
-  new Strategy(async function verify(floatingInput, floatingPassword, cb) {
+  new Strategy(async function verify(username, password, cb) {
     try {
-      console.log(`[DEBUG] Attempting login for username: ${floatingInput}`);
+      console.log(`[DEBUG] Attempting login for username: ${username}`);
 
       const result = await db.query("SELECT * FROM users WHERE username = $1", [
-        floatingInput,
+        username,
       ]);
 
       if (result.rows.length > 0) {
@@ -104,7 +110,7 @@ passport.use(
         console.log(`[DEBUG] User found in database: ${user.username}`);
         console.log(`[DEBUG] Comparing provided password with stored hash...`);
 
-        const isMatch = await bcrypt.compare(floatingPassword, storedHashedPassword);
+        const isMatch = await bcrypt.compare(password, storedHashedPassword);
 
         if (isMatch) {
           console.log("[DEBUG] Password match successful. Logging in user.");
