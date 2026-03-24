@@ -1,10 +1,10 @@
 # Writicle 📝
 
-Writicle is a dynamic platform for readers and writers to create, explore, and discuss articles. Built with a modern Node.js backend and a classic server-rendered EJS frontend, Writicle makes content creation intuitive using Editor.js.
+Writicle is a dynamic platform for readers and writers to create, explore, and discuss articles. Built with a modern Node.js backend and a classic server-rendered EJS frontend, Writicle makes content creation intuitive with a custom-built rich text editor.
 
 ## 🚀 Features
 
-- **Rich Text Editor**: Effortlessly compose articles with block-style editing via [Editor.js](https://editorjs.io/).
+- **Rich Text Editor**: Effortlessly compose articles with a custom, feature-rich text editor built natively into the platform.
 - **Authentication**: Secure local authentication with bcrypt, plus Google OAuth2 integration.
 - **Dynamic Views**: Fast, server-side rendered pages using EJS.
 - **Database Integrated**: Robust PostgreSQL database for storing user data, sessions, and articles securely.

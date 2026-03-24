@@ -13,7 +13,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@editorjs/editorjs": "^2.31.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "connect-pg-simple": "^10.0.0",
