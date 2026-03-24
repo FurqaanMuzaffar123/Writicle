@@ -1,50 +1,77 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/index.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
-      rel="stylesheet"
-    />
-    <title>Article Chat</title>
+    <title>Writicle - Share your voice</title>
+    <link rel="stylesheet" href="/styles/index.css" />
   </head>
   <body>
-    <div class="container">
-      <h1 class="heading">Welcome to Article Chat</h1>
-      <p class="info">
-        Post ideas. Start discussions. Let your articles talk — because every
-        article deserves a voice.
-      </p>
-      <hr />
-      div.
-    </div>
-  </body>
-  </html> -->
-  
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Dark Themed Page</title>
-      <link rel="stylesheet" href="styles/index.css">
-      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
-
-    </head>
-    <body>
-      <div class="container">
-        <h1>Welcome to <span class="highlight">ArticleChat</span></h1>
-        <p>“Post ideas. Start discussions. Let your articles talk — because every
-        article deserves a voice.”</p>
-        <div class="buttons">
-          <form action="/get_started" method="get">
-            <input type="submit" value="Get Started" />
-          </form>
+    <div>
+      <nav class="navbar">
+        <div class="navdiv">
+          <div class="logo">
+            <h3 class="navbarheading">Writicle</h3>
+          </div>
+          <ul>
+            <li>
+              Read
+    </li>
+            <li>Write</li>
+            <li>Contact</li>  
+          </ul>
         </div>
+      </nav>
+      <hr />
+      <div class="main-content">
+        <h1 class="heading">
+          <span class="highlight">Your <br /></span> 
+          <span class="non-highlight">interests, perspectives and <br /></span>
+          <span class="highlight">thoughts<br /></span> 
+          <span class="non-highlight"> in a matter of time, <br /></span>
+          <span class="highlight">to the world</span>
+        </h1>
+        <form action="/create_article" method="GET">
+        <button class="create-btn" type="submit">
+          Write An Article <span class="plus">→</span>
+        </button></form>
       </div>
-    </body>
-  </html>
+    </div>
+    <section id="read">
+      
+    </section>
+  </body>
+  <script>
+    const createBtn = document.querySelector(".create-btn");
+    const hr = document.querySelectorAll("hr");
+    const navbar = document.querySelector(".navbar");
+    const nonHighlight = document.querySelectorAll(".non-highlight");
+    const registerBtn = document.querySelector(".register-btn");
 
+    createBtn.addEventListener("mouseover", () => {
+      nonHighlight.forEach((part) => {
+        part.style.transition = "all 0.5s ease";
+        part.style.transitionDelay = "0.7s";
+        part.style.fontSize = "0";
+      });
+      hr.forEach((line) => {
+        line.style.transition = "all 0.5s ease";
+        line.style.borderColor = "rgb(232, 232, 232)";
+      });
+      navbar.style.transition = "all 0.5s ease";
+      navbar.style.color = "rgb(232,232,232)";
+    });
 
+    createBtn.addEventListener("mouseout", () => {
+      nonHighlight.forEach((part) => {
+        part.style.transition = "all 0.5s ease";
+        part.style.fontSize = "66px";
+        part.style.margin = "initial";
+      });
+      hr.forEach((line) => {
+        line.style.transition = "all 0.5s ease";
+        line.style.borderColor = "black";
+      });
+      navbar.style.transition = "all 0.5s ease";
+      navbar.style.color = "rgb(0,0,0)";
+    });
+  </script>
+</html>

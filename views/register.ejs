@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="/styles/register.css"> 
+</head>
+<body>
+
+  <div class="container">
+    <div class="form">
+      <h1 class="heading">Join</h1>
+
+      <form action="/register" method="post">
+
+        <div class="field">
+          <input
+            type="text"
+            id="full_name"
+            name="fullName"
+            required
+            placeholder=" "
+          />
+          <label for="full_name">Full Name</label>
+        </div>
+
+        <div class="field">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder=" "
+          />
+          <label for="email">Email</label>
+        </div>
+
+        <div class="field">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder=" "
+          />
+          <label for="password">Password</label>
+        </div>
+
+        <% if (locals.email_err) { %>
+          <p class="error">Email already in use. <a href="/login">Login</a>, if its your.</p>
+        <% } else if (locals.err_message){ %>
+          <p class="error"><%  %></p>
+        <%}%>
+        <button type="submit">Register</button>
+      </form>
+      <form action="/auth/google" method="get">
+        <button type="submit" class="google-btn">Continue with 
+          <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+        </button>
+      </form>
+    <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+  </div>
+
+</body>
+</html>

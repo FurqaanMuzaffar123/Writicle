@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/create_article.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+  <title>Write</title>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <nav class="navdiv">
+      <button class="back_btn" onclick="history.back()">⟵</button>
+      <h1>Write</h1>
+      <% if (!locals.user) { %>
+        <ul class="nav_links">
+          <li><a href="/login">Sign In</a></li>
+          <li><a href="/register">Register</a></li>
+        </ul>
+        <% } else { %>
+          <ul class="nav_links">
+            <li class="pfp_container"><a href="/profile"><img class="pfp" src="<%= locals.user?.avatar_url %>" alt=""
+                  height="40px"></a></li>
+          </ul>
+        <% } %>
+    </nav>
+  </nav>
+  <hr>
+  <div class="cover-section">
+      <div class="title-section">
+        <textarea name="title" id="title" placeholder="Your title here." oninput="autoResize(this)" rows=1></textarea>
+        <textarea name="subtitle" id="subtitle" placeholder="Add a subtitle." oninput="autoResize(this)" rows=1></textarea>
+      </div>
+      <div class="cover-image-section" id="coverImageSection"
+        onclick="document.getElementById('coverImageInput').click()">
+        <button class="remove-cover-btn" id="removeCoverBtn" onclick="removeCoverImage(event)">✕</button>
+        <div class="cover-image-placeholder">
+          <div style="font-size: 32px; margin-bottom: 12px;">🖼️</div>
+          <div>Click to add a cover image</div>
+          <div style="font-size: 13px; margin-top: 8px; color: var(--text-tertiary);">Recommended: 1600 × 900 pixels
+          </div>
+        </div>
+        <img id="coverImagePreview" class="cover-image-preview" alt="Cover">
+        <input type="file" id="coverImageInput" accept="image/*" style="display: none;"
+          onchange="handleCoverImage(event)">
+      </div>
+    </div>
+  <div class="container">
+
+    
+
+    <section id="editor">
+      <div class="editor-container">
+        <div class="options">
+          <div class="block">
+            <!-- Text format -->
+            <button id="bold" class="option-button format"><i class="fa-solid fa-bold"></i></button>
+            <button id="italic" class="option-button format"><i class="fa-solid fa-italic"></i></button>
+            <button id="underline" class="option-button format"><i class="fa-solid fa-underline"></i></button>
+            <button id="strikethrough" class="option-button format"><i class="fa-solid fa-strikethrough"></i></button>
+            <button id="quote" data-tip="Use subscript to write the author name." class="option-button format"><i class="fa-solid fa-quote-left"></i></button>
+            <button id="superscript" class="option-button script"><i class="fa-solid fa-superscript"></i></button>
+            <button id="subscript" class="option-button script"><i class="fa-solid fa-subscript"></i></button>
+          </div>
+          <!-- Lists -->
+          <div class="block">
+            <button id="insertOrderedList" class="option-button"><i class="fa-solid fa-list-ol"></i></button>
+            <button id="insertUnorderedList" class="option-button"><i class="fa-solid fa-list"></i></button>
+          </div>
+          <!-- Undo, Redo -->
+          <div class="block">
+            <button class="option-button" id="undo"><i class="fa-solid fa-rotate-left"></i></button>
+            <button class="option-button" id="redo"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+          <!-- Quote -->
+          <div class="block">
+
+          </div>
+          <!-- Link/Unlink -->
+          <div class="block">
+            <button id="createLink" class="adv-option-button"><i class="fa fa-link"></i></button>
+            <button id="unlink" class="option-button"><i class="fa fa-unlink"></i></button>
+          </div>
+          <!-- Alignment -->
+          <div class="block">
+            <button id="justifyLeft" class="option-button align"><i class="fa-solid fa-align-left"></i></button>
+            <button id="justifyCenter" class="option-button align"><i class="fa-solid fa-align-center"></i></button>
+            <button id="justifyRight" class="option-button align"><i class="fa-solid fa-align-right"></i></button>
+            <button id="justifyFull" class="option-button align"><i class="fa-solid fa-align-justify"></i></button>
+          </div>
+          <div class="block">
+            <button id="indent" class="option-button spacing"><i class="fa-solid fa-indent"></i></button>
+            <button id="outdent" class="option-button spacing"><i class="fa-solid fa-outdent"></i></button>
+          </div>
+          <!-- Headings -->
+          <div class="block">
+            <select id="formatBlock" class="adv-option-button">
+              <option value="H1">H1</option>
+              <option value="H2">H2</option>
+              <option value="H3">H3</option>
+              <option value="H4">H4</option>
+              <option value="H5">H5</option>
+              <option value="H6">H6</option>
+            </select>
+
+            <!-- Font -->
+            <select id="fontName" class="adv-option-button"></select>
+            <select id="fontSizeRef" class="adv-option-button"></select>
+          </div>
+          <!-- Color -->
+          <div class="block">
+            <div class="input-wrapper">
+              <input type="color" id="foreColor" class="adv-option-button">
+              <label for="foreColor">Font Color</label>
+            </div>
+            <div class="input-wrapper">
+              <input type="color" id="backColor" class="adv-option-button">
+              <label for="backColor">Highlight Color</label>
+            </div>
+          </div>
+        </div>
+        <div id="linkPopup" class="link-popup hidden">
+          <input type="url" id="linkInput" placeholder="Paste or type link..." />
+          <button id="applyLink">Apply</button>
+          <button id="cancelLink">Cancel</button>
+        </div>
+
+        <div id="text-input" contenteditable="true" spellcheck="true"></div>
+        <div class="buttons">
+          <button id="save">Save</button>
+          <button id="publish">Publish</button>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div id="toast" class="toast hidden">
+  <span id="toast-message">Error message here</span>
+</div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/scripts/create_article.js"></script>
+
+
+</body>
+
+</html>       

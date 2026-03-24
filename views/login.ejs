@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="/styles/login.css"> 
+</head>
+<body>
+
+  <div class="container">
+    <div class="form">
+      <h1 class="heading">Welcome Back</h1>
+
+      <form action="/register" method="post" >
+
+        <div class="field">
+          <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder=" "
+          />
+          <label for="email">Email</label>
+        </div>
+     <div class="field">
+  <input
+    type="password"
+    id="password"
+    name="password"
+    required
+  />
+
+  <button
+    type="button"
+    class="eye-toggle"
+    onclick="togglePassword()"
+    aria-label="Show password"
+  >
+    👁
+  </button>
+
+  <label for="password">Password</label>
+</div>
+
+
+        <button id="back_btn">⟵</button>
+        <button type="submit" class="submit_btn">Sign In</button>
+         <button id="email_trigger">Sign In with Email</button>
+      </form>
+      
+      <form action="/auth/google" method="get">
+        <button type="submit" class="google-btn">Continue with 
+          <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+        </button>
+        <% if (locals.email_err) { %>
+          <p class="error">Email already in use. <a href="/login">Login</a>, if its your.</p>
+        <% } else if (locals.err_message){ %>
+          <p class="error"><%  %></p>
+        <%}%>
+      </form>
+    </div>
+  </div>
+  
+</body>
+<script>
+  const emailTrigger = document.getElementById('email_trigger');
+  const fields = Array.from(document.getElementsByClassName('field'));
+  const googleBtn = document.getElementsByClassName('google-btn')[0];
+  const submitBtn = document.getElementsByClassName('submit_btn')[0];
+  const backBtn = document.getElementById('back_btn');
+
+  fields.forEach(element => {
+    element.style.display = "none";
+  });
+  submitBtn.style.display = "none";
+  backBtn.style.display = "none";
+
+  emailTrigger.addEventListener('click', (e) => {
+    setTimeout(() => {
+      emailTrigger.style.display = "none";
+      googleBtn.style.display = "none"
+      submitBtn.style.display = "block";
+      backBtn.style.display = "block";
+      fields.forEach(element => {
+        element.style.display = "block";
+      });
+    }, 0);
+  });
+
+  backBtn.addEventListener('click', (e) => {
+    setTimeout(() => {
+      emailTrigger.style.display = "block";
+      googleBtn.style.display = "block"
+      submitBtn.style.display = "none";
+      backBtn.style.display = "none";
+      fields.forEach(element => {
+        element.style.display = "none";
+      });
+    }, 0);
+  });
+
+  function togglePassword() {
+    const input = document.getElementById("password");
+    const eye = document.querySelector(".eye-toggle");
+
+    if (input.type === "password") {
+      input.type = "text";
+    } else {
+      input.type = "password";
+    }
+  }
+
+
+</script>
+</html>

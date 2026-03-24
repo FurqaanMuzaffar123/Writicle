@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/choose_feed.css" />
+    <title>ArticleChat - Choose Your Feed</title>
+  </head>
+  <body>
+    <div class="container montserrat">
+      <div class="background-squares">
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+      </div>
+
+      <h2 class="montserrat">
+        Choose the worlds your thoughts wish to wander:
+      </h2>
+      <div class="topics montserrat">
+        <div class="topic">Science & Knowledge</div>
+        <div class="topic">Technology & Innovation</div>
+        <div class="topic">Arts & Creativity</div>
+        <div class="topic">Society & Culture</div>
+        <div class="topic">Lifestyle & Personal Growth</div>
+        <div class="topic">Nature & Exploration</div>
+        <div class="topic">Fiction & Entertainment</div>
+        <div class="topic">Miscellaneous Fun Topics</div>
+      </div>
+      <div class="subtopics montserrat">
+        <div class="topic SK">Science</div>
+        <div class="topic SK">Space & Astronomy</div>
+        <div class="topic SK">Physics</div>
+        <div class="topic SK">Chemistry</div>
+        <div class="topic SK">Biology</div>
+        <div class="topic SK">Artificial Intelligence</div>
+        <div class="topic SK">Environment</div>
+        <div class="topic SK">Psychology</div>
+        <div class="topic SK">Mathematics</div>
+        <div class="topic TI">Tech News</div>
+        <div class="topic TI">Programming</div>
+        <div class="topic TI">Cybersecurity</div>
+        <div class="topic TI">Gadgets</div>
+        <div class="topic TI">Startups</div>
+        <div class="topic TI">Robotics</div>
+        <div class="topic TI">Gaming</div>
+        <div class="topic TI">Virtual Reality (VR)</div>
+        <div class="topic TI">Blockchain & Crypto</div>
+        <div class="topic AC">Art & Design</div>
+        <div class="topic AC">Photography</div>
+        <div class="topic AC">Animation</div>
+        <div class="topic AC">Architecture</div>
+        <div class="topic AC">Film & Cinema</div>
+        <div class="topic AC">Music</div>
+        <div class="topic AC">Writing & Literature</div>
+        <div class="topic AC">Fashion</div>
+        <div class="topic AC">Crafts & DIY</div>
+        <div class="topic SC">World News</div>
+        <div class="topic SC">History</div>
+        <div class="topic SC">Politics</div>
+        <div class="topic SC">Culture & Traditions</div>
+        <div class="topic SC">Philosophy</div>
+        <div class="topic SC">Education</div>
+        <div class="topic SC">Language & Linguistics</div>
+        <div class="topic SC">Religion & Beliefs</div>
+        <div class="topic LP">Health & Fitness</div>
+        <div class="topic LP">Nutrition</div>
+        <div class="topic LP">Mental Health</div>
+        <div class="topic LP">Relationships</div>
+        <div class="topic LP">Productivity</div>
+        <div class="topic LP">Motivation</div>
+        <div class="topic LP">Finance & Investing</div>
+        <div class="topic LP">Career & Business</div>
+        <div class="topic LP">Self-Improvement</div>
+        <div class="topic NE">Travel</div>
+        <div class="topic NE">Geography</div>
+        <div class="topic NE">Wildlife</div>
+        <div class="topic NE">Oceans</div>
+        <div class="topic NE">Space Exploration</div>
+        <div class="topic NE">Adventure</div>
+        <div class="topic NE">Hiking & Camping</div>
+        <div class="topic FE">Sci-Fi</div>
+        <div class="topic FE">Fantasy</div>
+        <div class="topic FE">Horror</div>
+        <div class="topic FE">Mystery</div>
+        <div class="topic FE">Anime & Manga</div>
+        <div class="topic FE">Comics & Superheroes</div>
+        <div class="topic FE">TV Shows & Movies</div>
+        <div class="topic FE">Pop Culture</div>
+        <div class="topic MF">Memes & Humor</div>
+        <div class="topic MF">Life Hacks</div>
+        <div class="topic MF">Food & Recipes</div>
+        <div class="topic MF">Sports</div>
+        <div class="topic MF">Cars & Motorbikes</div>
+        <div class="topic MF">Minimalism</div>
+        <div class="topic MF">Urban Life</div>
+        <div class="topic MF">Parenting</div>
+        <div class="topic MF">Pets</div>
+      </div>
+      <div class="submit-box">
+        <button id="submitBtn1" class="montserrat">Submit</button>
+        <button id="submitBtn2" class="montserrat">Submit</button>
+        <img src="/images/dark.png" alt="" class="toggle-theme" />
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      $(function () {
+        // wait for DOM + jQuery
+        let theme = "dark";
+        const associations = {
+          "Science & Knowledge": "SK",
+          "Technology & Innovation": "TI",
+          "Arts & Creativity": "AC",
+          "Society & Culture": "SC",
+          "Lifestyle & Personal Growth": "LP",
+          "Nature & Exploration": "NE",
+          "Fiction & Entertainment": "FE",
+          "Miscellaneous Fun Topics": "MF",
+        };
+
+        // initial UI
+        $(".subtopics .topic").hide();
+        $("#submitBtn2").hide();
+
+        // track selected main topics in a Set
+        const selectedTopics = new Set();
+
+        // main topic clicks (jQuery)
+        $(".topics").on("click", ".topic", function (e) {
+          e.preventDefault();
+          $(this).toggleClass("selected");
+          const text = $(this).text().trim();
+          if (selectedTopics.has(text)) selectedTopics.delete(text);
+          else selectedTopics.add(text);
+        });
+
+        // allow selecting subtopics (they will be .selected when clicked)
+        $(".subtopics").on("click", ".topic", function (e) {
+          e.preventDefault();
+          $(this).toggleClass("selected");
+        });
+
+        // theme toggle (jQuery)
+        $(".toggle-theme").on("click", function (e) {
+          e.preventDefault();
+          $("body").toggleClass("light-theme");
+          $(".container").toggleClass("light-theme");
+          $(".topic").toggleClass("light-theme");
+          $(".square").toggleClass("light-theme");
+          $(".toggle-theme").toggleClass("light-theme");
+          $(".toggle-theme").attr(
+            "src",
+            $("body").hasClass("light-theme")
+              ? "/images/light.png"
+              : "/images/dark.png"
+          );
+          theme = $("body").hasClass("light-theme") ? "light" : "dark";
+        });
+
+        // FIRST button: show subtopics matching selected main topics
+        $("#submitBtn1").on("click", function (e) {
+          e.preventDefault();
+          const selectedArray = Array.from(selectedTopics);
+          console.log("Selected Topics:", selectedArray);
+
+          const selectedValues = selectedArray
+            .map((t) => associations[t])
+            .filter(Boolean);
+          console.log("Selected Values:", selectedValues);
+
+          // hide and reset subtopics
+          $(".subtopics .topic").hide().removeClass("selected");
+
+          selectedValues.forEach((code) => {
+            $(`.subtopics .${code}`).show();
+          });
+
+          if (selectedValues.length > 0) $(".subtopics").show();
+          else $(".subtopics").hide();
+
+          // toggle UI
+          $(".topics").hide();
+          $("#submitBtn1").hide();
+          $("#submitBtn2").show();
+        });
+
+        // SECOND button: gather subtopics and send to server
+        $("#submitBtn2").on("click", function (e) {
+          e.preventDefault();
+          const selectedSubtopics = [];
+          $(".subtopics .topic.selected").each((i, el) => {
+            selectedSubtopics.push($(el).text().trim());
+          });
+
+          if (selectedSubtopics.length === 0) {
+            console.log("No subtopics selected; not submitting.");
+            return;
+          }
+
+          console.log("Selected Subtopics:", selectedSubtopics);
+
+          fetch("/choose_feed", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+              theme: theme,
+              topics: JSON.stringify(Array.from(selectedTopics)),
+              subtopics: JSON.stringify(selectedSubtopics),
+            }),
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
